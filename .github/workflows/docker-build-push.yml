@@ -11,6 +11,7 @@ on:
 env:
   SERVICE_NAME: monitor
   DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+  DOCKER_REPO: nuniesmith/fks
 
 jobs:
   test:
@@ -71,14 +72,14 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ secrets.DOCKER_USERNAME }}/${{ env.SERVICE_NAME }}
+          images: ${{ env.DOCKER_REPO }}
           tags: |
-            type=ref,event=branch
-            type=sha,prefix=sha-
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=semver,pattern={{major}}
-            type=raw,value=latest,enable={{is_default_branch}}
+            type=raw,value=${{ env.SERVICE_NAME }}-latest,enable={{is_default_branch}}
+            type=sha,prefix=${{ env.SERVICE_NAME }}-,format=short
+            type=ref,event=branch,prefix=${{ env.SERVICE_NAME }}-
+            type=semver,pattern={{version}},value=${{ env.SERVICE_NAME }}-{{version}}
+            type=semver,pattern={{major}}.{{minor}},value=${{ env.SERVICE_NAME }}-{{major}}.{{minor}}
+            type=semver,pattern={{major}},value=${{ env.SERVICE_NAME }}-{{major}}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
