@@ -77,9 +77,9 @@ jobs:
             type=raw,value=${{ env.SERVICE_NAME }}-latest,enable={{is_default_branch}}
             type=sha,prefix=${{ env.SERVICE_NAME }}-,format=short
             type=ref,event=branch,prefix=${{ env.SERVICE_NAME }}-
-            type=semver,pattern={{version}},value=${{ env.SERVICE_NAME }}-{{version}}
-            type=semver,pattern={{major}}.{{minor}},value=${{ env.SERVICE_NAME }}-{{major}}.{{minor}}
-            type=semver,pattern={{major}},value=${{ env.SERVICE_NAME }}-{{major}}
+            type=semver,pattern={{version}},prefix=${{ env.SERVICE_NAME }}-
+            type=semver,pattern={{major}}.{{minor}},prefix=${{ env.SERVICE_NAME }}-
+            type=semver,pattern={{major}},prefix=${{ env.SERVICE_NAME }}-
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
