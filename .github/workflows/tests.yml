@@ -74,7 +74,21 @@ jobs:
       - name: Test Docker image
         run: |
           docker run -d --name monitor_test -p 8009:8009 monitor:latest
-          sleep 10
-          curl -f http://localhost:8009/health || exit 1
+          # Wait for service to start with retries
+          for i in {1..30}; do
+            if curl -f http://localhost:8009/health 2>/dev/null; then
+              echo "Service is healthy!"
+              break
+            fi
+            echo "Waiting for service to start... ($i/30)"
+            sleep 2
+            if [ $i -eq 30 ]; then
+              echo "Service failed to start"
+              docker logs monitor_test
+              docker stop monitor_test
+              docker rm monitor_test
+              exit 1
+            fi
+          done
           docker stop monitor_test
           docker rm monitor_test
