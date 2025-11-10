@@ -73,7 +73,8 @@ jobs:
         
       - name: Test Docker image
         run: |
-          docker run -d --name monitor_test -p 8006:8006 monitor:latest
+          docker run -d --name monitor_test -p 8009:8009 monitor:latest
           sleep 10
-          curl -f http://localhost:8006/health || exit 1
+          curl -f http://localhost:8009/health || exit 1
           docker stop monitor_test
+          docker rm monitor_test
