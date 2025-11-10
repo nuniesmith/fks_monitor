@@ -73,22 +73,41 @@ jobs:
         
       - name: Test Docker image
         run: |
-          docker run -d --name monitor_test -p 8009:8009 monitor:latest
-          # Wait for service to start with retries
+          set +e
+          # Run container with environment variables to handle missing dependencies gracefully
+          docker run -d --name monitor_test \
+            -p 8009:8009 \
+            -e PROMETHEUS_URL=http://localhost:9090 \
+            -e GRAFANA_URL=http://localhost:3000 \
+            -e HEALTH_CHECK_INTERVAL=60 \
+            -e METRICS_UPDATE_INTERVAL=120 \
+            monitor:latest
+          
+          # Wait for service to start with retries (up to 60 seconds)
+          echo "Waiting for service to start..."
           for i in {1..30}; do
-            if curl -f http://localhost:8009/health 2>/dev/null; then
-              echo "Service is healthy!"
+            sleep 2
+            if curl -f http://localhost:8009/health >/dev/null 2>&1; then
+              echo "✓ Service is healthy!"
+              HEALTHY=true
               break
             fi
-            echo "Waiting for service to start... ($i/30)"
-            sleep 2
-            if [ $i -eq 30 ]; then
-              echo "Service failed to start"
-              docker logs monitor_test
-              docker stop monitor_test
-              docker rm monitor_test
-              exit 1
-            fi
+            echo "  Attempt $i/30: Service not ready yet..."
           done
+          
+          # Check if service started successfully
+          if [ "${HEALTHY}" != "true" ]; then
+            echo "✗ Service failed to become healthy"
+            echo "Container logs:"
+            docker logs monitor_test
+            echo "Container status:"
+            docker ps -a | grep monitor_test
+            docker stop monitor_test 2>/dev/null || true
+            docker rm monitor_test 2>/dev/null || true
+            exit 1
+          fi
+          
+          # Cleanup
           docker stop monitor_test
           docker rm monitor_test
+          echo "✓ Docker test passed"
