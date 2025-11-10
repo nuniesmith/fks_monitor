@@ -1,0 +1,38 @@
+# Prometheus configuration for FKS services
+global:
+  scrape_interval: 30s
+  evaluation_interval: 30s
+
+scrape_configs:
+  - job_name: 'fks-monitor'
+    static_configs:
+      - targets: ['fks-monitor:8009']
+
+  - job_name: 'fks-api'
+    static_configs:
+      - targets: ['fks-api:8001']
+
+  - job_name: 'fks-app'
+    static_configs:
+      - targets: ['fks-app:8002']
+
+  - job_name: 'fks-data'
+    static_configs:
+      - targets: ['fks-data:8003']
+
+  - job_name: 'fks-execution'
+    static_configs:
+      - targets: ['fks-execution:8006']
+
+  - job_name: 'fks-web'
+    static_configs:
+      - targets: ['fks-web:8000']
+
+  - job_name: 'fks-ai'
+    static_configs:
+      - targets: ['fks-ai:8007']
+
+  - job_name: 'fks-analyze'
+    static_configs:
+      - targets: ['fks-analyze:8008']
+

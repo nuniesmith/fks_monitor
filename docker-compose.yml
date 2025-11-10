@@ -1,0 +1,70 @@
+
+services:
+  fks-monitor:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: nuniesmith/fks_monitor:latest
+    container_name: fks-monitor
+    ports:
+      - "8009:8009"
+    environment:
+      - MONITOR_PORT=8009
+      - PROMETHEUS_URL=http://prometheus:9090
+      - GRAFANA_URL=http://grafana:3000
+      - GOOGLE_AI_API_KEY=${GOOGLE_AI_API_KEY:-}
+      - HEALTH_CHECK_INTERVAL=30
+      - METRICS_UPDATE_INTERVAL=60
+      - TEST_CHECK_INTERVAL=300
+    volumes:
+      - ./config:/app/config:ro
+    networks:
+      - fks-network
+    depends_on:
+      - prometheus
+      - grafana
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8009/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: fks-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - prometheus-data:/prometheus
+      - ./config/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+    networks:
+      - fks-network
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: fks-grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_INSTALL_PLUGINS=
+    volumes:
+      - grafana-data:/var/lib/grafana
+    networks:
+      - fks-network
+    restart: unless-stopped
+
+networks:
+  fks-network:
+    external: true
+
+volumes:
+  prometheus-data:
+  grafana-data:
+

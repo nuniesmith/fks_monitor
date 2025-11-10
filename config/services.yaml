@@ -1,0 +1,68 @@
+# FKS Services Configuration
+# This file defines all FKS services that fks_monitor should monitor
+
+services:
+  fks_api:
+    name: fks_api
+    health_url: http://fks-api:8001/health
+    ready_url: http://fks-api:8001/ready
+    live_url: http://fks-api:8001/live
+    port: 8001
+    metrics_url: http://fks-api:8001/metrics
+
+  fks_app:
+    name: fks_app
+    health_url: http://fks-app:8002/health
+    ready_url: http://fks-app:8002/ready
+    live_url: http://fks-app:8002/live
+    port: 8002
+    metrics_url: http://fks-app:8002/metrics
+
+  fks_data:
+    name: fks_data
+    health_url: http://fks-data:8003/health
+    ready_url: http://fks-data:8003/ready
+    live_url: http://fks-data:8003/live
+    port: 8003
+    metrics_url: http://fks-data:8003/metrics
+
+  fks_execution:
+    name: fks_execution
+    health_url: http://fks-execution:8006/health
+    ready_url: http://fks-execution:8006/ready
+    live_url: http://fks-execution:8006/live
+    port: 8006
+    metrics_url: http://fks-execution:8006/metrics
+
+  fks_web:
+    name: fks_web
+    health_url: http://fks-web:8000/health
+    ready_url: http://fks-web:8000/ready
+    live_url: http://fks-web:8000/live
+    port: 8000
+    metrics_url: http://fks-web:8000/metrics
+
+  fks_ai:
+    name: fks_ai
+    health_url: http://fks-ai:8007/health
+    ready_url: http://fks-ai:8007/ready
+    live_url: http://fks-ai:8007/live
+    port: 8007
+    metrics_url: http://fks-ai:8007/metrics
+
+  fks_analyze:
+    name: fks_analyze
+    health_url: http://fks-analyze:8008/health
+    ready_url: http://fks-analyze:8008/ready
+    live_url: http://fks-analyze:8008/live
+    port: 8008
+    metrics_url: http://fks-analyze:8008/metrics
+
+  fks_monitor:
+    name: fks_monitor
+    health_url: http://fks-monitor:8009/health
+    ready_url: http://fks-monitor:8009/ready
+    live_url: http://fks-monitor:8009/live
+    port: 8009
+    metrics_url: http://fks-monitor:8009/metrics
+
