@@ -4,7 +4,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: nuniesmith/fks_monitor:latest
+    image: nuniesmith/fks:monitor-latest
     container_name: fks-monitor
     ports:
       - "8013:8013"
