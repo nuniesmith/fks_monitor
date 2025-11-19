@@ -18,8 +18,8 @@ jobs:
     uses: nuniesmith/fks_actions/.github/workflows/ci-python-service.yml@main
     with:
       service_name: monitor
-      service_port: '8011'
-      python_version: '3.12'
+      service_port: "8011"
+      python_version: "3.12"
       has_dev_requirements: true
       run_mypy: false
       healthcheck_enabled: false
