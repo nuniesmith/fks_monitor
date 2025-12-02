@@ -4,35 +4,40 @@ global:
   evaluation_interval: 30s
 
 scrape_configs:
-  - job_name: 'fks-monitor'
+  - job_name: "fks-monitor"
     static_configs:
-      - targets: ['fks-monitor:8009']
+      - targets: ["fks-monitor:8009"]
 
-  - job_name: 'fks-api'
+  - job_name: "fks-api"
     static_configs:
-      - targets: ['fks-api:8001']
+      - targets: ["fks-api:8001"]
 
-  - job_name: 'fks-app'
+  - job_name: "fks-app"
     static_configs:
-      - targets: ['fks-app:8002']
+      - targets: ["fks-app:8002"]
 
-  - job_name: 'fks-data'
+  - job_name: "fks-data"
     static_configs:
-      - targets: ['fks-data:8003']
+      - targets: ["fks-data:8003"]
 
-  - job_name: 'fks-execution'
+  - job_name: "fks-execution"
     static_configs:
-      - targets: ['fks-execution:8006']
+      - targets: ["fks-execution:8006"]
 
-  - job_name: 'fks-web'
+  - job_name: "fks-web"
     static_configs:
-      - targets: ['fks-web:8000']
+      - targets: ["fks-web:8000"]
 
-  - job_name: 'fks-ai'
+  - job_name: "fks-ai"
     static_configs:
-      - targets: ['fks-ai:8007']
+      - targets: ["fks-ai:8007"]
 
-  - job_name: 'fks-analyze'
+  - job_name: "fks-analyze"
     static_configs:
-      - targets: ['fks-analyze:8008']
+      - targets: ["fks-analyze:8008"]
 
+  - job_name: "fks-crypto"
+    static_configs:
+      - targets: ["fks-crypto:8014"]
+    metrics_path: "/health"
+    # Note: fks_crypto doesn't expose Prometheus metrics, but health endpoint can be monitored

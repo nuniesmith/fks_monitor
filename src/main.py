@@ -104,12 +104,27 @@ async def root() -> Dict[str, Any]:
         "status": "operational",
         "timestamp": datetime.utcnow().isoformat(),
         "endpoints": {
-            "health": "/health",
+            "health": "/health/health",
             "services": "/api/v1/services",
             "metrics": "/api/v1/metrics",
             "tests": "/api/v1/tests",
             "prometheus": "/metrics"
         }
+    }
+
+
+@app.get("/health")
+async def health_redirect() -> Dict[str, Any]:
+    """
+    Health check endpoint for compatibility.
+    Redirects to /health/health for standardized health checks.
+    """
+    return {
+        "status": "healthy",
+        "service": "fks_monitor",
+        "timestamp": datetime.utcnow().isoformat(),
+        "version": "1.0.0",
+        "note": "For detailed health check, use /health/health"
     }
 
 

@@ -29,8 +29,8 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PIP_NO_CACHE_DIR=1 \
     SERVICE_NAME=fks_monitor \
     SERVICE_TYPE=monitor \
-    MONITOR_PORT=8009 \
-    SERVICE_PORT=8009 \
+    MONITOR_PORT=8013 \
+    SERVICE_PORT=8013 \
     PYTHONPATH=/app/src:/app \
     PATH=/home/appuser/.local/bin:$PATH
 
@@ -60,13 +60,13 @@ USER appuser
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
-    CMD python -c "import os,urllib.request,sys;port=os.getenv('SERVICE_PORT','8009');u=f'http://localhost:{port}/health';\
+    CMD python -c "import os,urllib.request,sys;port=os.getenv('SERVICE_PORT','8013');u=f'http://localhost:{port}/health';\
 import urllib.error;\
 try: urllib.request.urlopen(u,timeout=3);\
 except Exception: sys.exit(1)" || exit 1
 
 # Expose the service port
-EXPOSE 8009
+EXPOSE 8013
 
 # Use entrypoint script
 ENTRYPOINT ["./entrypoint.sh"]

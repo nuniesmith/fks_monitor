@@ -103,10 +103,17 @@ class HealthCollector:
             },
             "fks_monitor": {
                 "name": "fks_monitor",
-                "health_url": "http://fks-monitor:8009/health",
-                "ready_url": "http://fks-monitor:8009/ready",
-                "live_url": "http://fks-monitor:8009/live",
-                "port": 8009
+                "health_url": "http://fks-monitor:8013/health",
+                "ready_url": "http://fks-monitor:8013/ready",
+                "live_url": "http://fks-monitor:8013/live",
+                "port": 8013
+            },
+            "fks_crypto": {
+                "name": "fks_crypto",
+                "health_url": "http://fks-crypto:8014/health",
+                "ready_url": "http://fks-crypto:8014/ready",
+                "live_url": "http://fks-crypto:8014/live",
+                "port": 8014
             }
         }
     
