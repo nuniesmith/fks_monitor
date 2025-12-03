@@ -166,6 +166,102 @@
           "show": true
         }
       ]
+    },
+    {
+      "type": "stat",
+      "title": "Build Info",
+      "datasource": "Prometheus",
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 0,
+        "y": 8
+      },
+      "targets": [
+        {
+          "expr": "fks_build_info",
+          "refId": "A",
+          "format": "time_series"
+        }
+      ],
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "values": false
+        }
+      }
+    },
+    {
+      "type": "stat",
+      "title": "Service Up",
+      "datasource": "Prometheus",
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 6,
+        "y": 8
+      },
+      "targets": [
+        {
+          "expr": "up{job=~\"fks_api|fks_data\"}",
+          "refId": "A",
+          "format": "time_series"
+        }
+      ],
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "values": false
+        }
+      }
+    },
+    {
+      "type": "graph",
+      "title": "HTTP Requests Rate",
+      "datasource": "Prometheus",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 14
+      },
+      "targets": [
+        {
+          "expr": "sum(rate(http_requests_total[5m])) by (method, handler)",
+          "refId": "A",
+          "format": "time_series"
+        }
+      ],
+      "lines": true,
+      "legend": {
+        "show": true
+      }
+    },
+    {
+      "type": "graph",
+      "title": "HTTP 95th Percentile Latency",
+      "datasource": "Prometheus",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 14
+      },
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket[5m])) by (le, handler))",
+          "refId": "A",
+          "format": "time_series"
+        }
+      ],
+      "lines": true,
+      "legend": {
+        "show": true
+      }
     }
   ],
   "refresh": "5s",
